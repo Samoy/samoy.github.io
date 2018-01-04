@@ -1,1 +1,53 @@
-theme: jekyll-theme-minimal
+# Basic
+title: Samoy的小窝
+subtitle: 千里之行,始于足下 万行代码,始于指下
+welcome_message: <a href="http://www.samoy.site#blog" target="_blank">欢迎光临Samoy的小窝</a>
+description: 一个默默工作的程序员,单身狗
+creator: <a href="http://www.samoy.site">@Samoy</a>
+
+url: "http://www.samoy.site"
+
+permalink: /:year/:month/:title/
+
+BASE_PATH: http://www.samoy.site
+categories_path: categories.html
+
+# Format
+highlighter: rouge
+
+# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
+cover_color: slate
+
+# The blog button should not be removed.
+blog_button:
+    title: 博客
+    description: 查看博客
+
+# Navigation buttons in the front page.
+nav:
+    - {title: 目录, description: 博客目录, in_site: true,url: '/timeline'}
+    - {title: 分类, description: 博客分类, in_site: true,url: '/categories'}
+    - {title: 关于, description: 关于个人, in_site: true,url: '/about'}
+
+# Pagination
+gems: [jekyll-paginate]
+paginate: 10
+paginate_path: "page/:num/"
+
+# Comment
+comment:
+    disqus: vno-jekyll
+    # duoshuo:
+
+# Social
+social:
+    weibo: 1759693233
+    github: Samoy
+    twitter: samoy_young
+    rss: /feed.xml
+    mail: samoy_young@163.com
+
+# Google Analytics
+ga:
+    # id: your_ga_id
+    # host: your_host

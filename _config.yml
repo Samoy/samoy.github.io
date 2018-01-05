@@ -42,8 +42,7 @@ categories_path: categories
 
 # Comment
 comment:
-    disqus: vno-jekyll
-    # duoshuo:
+    changyan: Samoy
 
 # Social
 social:
@@ -55,5 +54,5 @@ social:
 
 # Google Analytics
 ga:
-    # id: your_ga_id
-    # host: your_host
+     id: UA-112019455-1
+     host: www.samoy.site

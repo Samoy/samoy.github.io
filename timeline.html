@@ -1,9 +1,8 @@
 ---
 layout: post
-category: TimeLine
 title: 目录
 date: 2018-01-04 22:50:00.000000000 +08:00
-keywords: Samoy, samoy
+keywords: Samoy, samoy,目录
 excerpt: 博客时间线
 ---
 
@@ -14,7 +13,7 @@ excerpt: 博客时间线
         <div width="100%">
             <div width="100%">
                 <input type="text" name="q" value=""/>
-                <input type="submit" src="/assets/siteinfo/search_bg.png" alt="Submit" width="80" height="24" value="搜索" />
+                <input type="submit" src="/assets/images/search_bg.png" alt="Submit" width="80" height="24" value="搜索" />
             </div>
             <input type="hidden" name="domains" value="{{ site.url }}" />
             <input type="hidden" name="sitesearch" value="{{ site.url }}" />
@@ -32,13 +31,16 @@ excerpt: 博客时间线
 <!-- SiteSearch Google -->
 
 <ol class="time-line">
-    <hr />
+    <hr/>
     <!--置顶-->
     {% for post in site.posts %}
     {% if post.istop %}
     <li>
         <h1 class="time-line-title"><a href="{{ post.url }}" title="访问 {{ post.title }}">[置顶]{{ post.title }}</a></h1>
-        <div class="time-line-mate"><time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{ post.category }}</span> </div>
+        <div class="time-line-mate">
+            <time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date |
+                date: "%F"}}
+            </time> &#8226; <span class="post-list__meta--tags tags">{{ post.category }}</span></div>
     </li>
     {% endif %}
     {% endfor %}
@@ -48,7 +50,10 @@ excerpt: 博客时间线
     {% else %}
     <li>
         <h1 class="time-line-title"><a href="{{ post.url }}" title="访问 {{ post.title }}">{{ post.title }}</a></h1>
-        <div class="time-line-mate"><time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{ post.category }}</span></div>
+        <div class="time-line-mate">
+            <time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date |
+                date: "%F"}}
+            </time> &#8226; <span class="post-list__meta--tags tags">{{ post.category }}</span></div>
     </li>
     {% endif %}
     {% endfor %}

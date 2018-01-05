@@ -1,6 +1,7 @@
 ---
-layout: page
-title: 分类页面
+layout: post
+title: 分类
+date: 2018-01-04 22:50:00.000000000 +08:00
 ---
 
 <div class="col-sm-3 col-xs-9">
@@ -40,8 +41,8 @@ title: 分类页面
             {% if node.title != null %}
             {% if group == null or group == node.group %}
             <li style="line-height: 35px;"><a href="{{ site.BASE_PATH }}{{node.url}}"
-                                              style="font-family: 'Raleway', sans-serif; color:#333;font-weight:bold">{{node.title}}</a>
-                <span class="text-muted">- {{ node.date | date: "%B %d, %Y" }}</span></li>
+                                              style="font-family: 'Raleway', sans-serif; color:#333;font-weight:bold;font-size: larger">{{node.title}}</a>
+                <span class="text-muted" style="font-size: small">- {{ node.date | date: "%F" }}</span></li>
             {% endif %}
             {% endif %}
             {% endfor %}

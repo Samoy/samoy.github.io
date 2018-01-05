@@ -1,0 +1,68 @@
+---
+layout: post
+title: 关于Java和OC深浅复制的问题
+categories: Java
+date: 2018-01-05 12:10:24.000000000 +08:00
+---
+
+昨天做项目的时候才发现Java和OC的深浅复制和Java的完全相反，Java的深复制是复制对象的地址，即两个对象有相同的内存地址（或者说这是同一个对象），而浅复制才是复制是一个新的对象，即新开辟一个新的内存地址，属性通过赋值传递。
+
+下面是Java的一个例子:
+```
+public class Main {
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Cat cat = new Cat();
+        cat.setName("猫");
+        //深复制
+        Cat cat1 = cat;
+        //浅复制
+        Cat cat2 = (Cat) cat.clone();
+        System.out.println("原对象cat的地址:" + cat);
+        System.out.println("深复制cat1的地址:" + cat1);
+        System.out.println("浅复制cat2的地址:" + cat2);
+    }
+}
+
+class Cat implements Cloneable {
+
+    private String name;
+
+    public Cat() {
+
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+```
+而OC的深浅复制（OC通常称为拷贝）和Java正好相反:
+ - 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间。
+ - 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。
+ 
+OC中关键字`retain`，`copy`和`mutableCopy`的区别
+retain：始终是浅复制。引用计数每次加一。返回对象是否可变与被复制的对象保持一致。
+copy：对于可变对象为深复制，引用计数不改变；对于不可变对象是浅复制，
+         引用计数每次加一。始终返回一个不可变对象。
+mutableCopy：始终是深复制，引用计数不改变。始终返回一个可变对象。
+
+下面是OC的例子:
+```
+NSString* string = @"源字符串";  
+NSString* stringCopy = [string copy];// stringCopy与string地址相同，retainCount+ 1  
+NSMutableString* stringMCopy = [string mutablecopy];// stringMCopy与string地址不同  
+   
+NSMutableString* stringM1 = [stringMCopy copy];//地址与stringMCopy不同，且为不可修改
+NSMutableString* stringM2 = [stringMCopy mutablecopy];//地址与stringMCopy不同，可修改 
+```

@@ -9,8 +9,6 @@ url: "http://www.samoy.site"
 
 permalink: /:year/:month/:title/
 
-BASE_PATH: http://www.samoy.site
-categories_path: categories.html
 
 # Format
 highlighter: rouge
@@ -33,6 +31,14 @@ nav:
 plugins: [jekyll-paginate]
 paginate: 10
 paginate_path: "page/:num/"
+
+#markdown
+markdown: kramdown
+kramdown:
+  input: GFM
+
+#categories
+categories_path: categories
 
 # Comment
 comment:

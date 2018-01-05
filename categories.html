@@ -10,7 +10,7 @@ date: 2018-01-04 22:50:00.000000000 +08:00
         {% if categories_list.first[0] == null %}
         {% for category in categories_list %}
         <li>
-            <a href="{{ site.BASE_PATH }}/{{ site.categories_path }}#{{ category | replace:' ','-' }}-ref"
+            <a href="{{ site.url }}/{{ site.categories_path }}#{{ category | replace:' ','-' }}-ref"
                data-toggle="tab">
                 {{ category | capitalize }} <span class="badge pull-right">{{ site.categories[category].size }}</span>
             </a>
@@ -20,7 +20,7 @@ date: 2018-01-04 22:50:00.000000000 +08:00
         {% for category in categories_list %}
         <li>
             <a style="font-family:ubuntu; color:#666;font-weight:bold"
-               href="{{ site.BASE_PATH }}/{{ site.categories_path }}#{{ category[0] | replace:' ','-' }}-ref"
+               href="{{ site.url }}/{{ site.categories_path }}#{{ category[0] | replace:' ','-' }}-ref"
                data-toggle="tab">
                 {{ category[0] | capitalize }} <span class="badge pull-right">{{ category[1].size }}</span>
             </a>
@@ -40,7 +40,7 @@ date: 2018-01-04 22:50:00.000000000 +08:00
             {% for node in pages_list %}
             {% if node.title != null %}
             {% if group == null or group == node.group %}
-            <li style="line-height: 35px;"><a href="{{ site.BASE_PATH }}{{node.url}}"
+            <li style="line-height: 35px;"><a href="{{ site.url }}{{node.url}}"
                                               style="font-family: 'Raleway', sans-serif; color:#333;font-weight:bold;font-size: larger">{{node.title}}</a>
                 <span class="text-muted" style="font-size: small">- {{ node.date | date: "%F" }}</span></li>
             {% endif %}

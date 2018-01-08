@@ -28,7 +28,7 @@ nav:
     - {title: 关于, description: 关于个人, in_site: true,url: '/about'}
 
 # Pagination
-plugins: [jekyll-paginate]
+plugins: [jekyll-paginate, jekyll-sitemap]
 paginate: 10
 paginate_path: "page/:num/"
 

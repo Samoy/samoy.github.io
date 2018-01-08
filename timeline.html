@@ -6,25 +6,17 @@ keywords: Samoy, samoy,目录
 excerpt: 博客时间线
 ---
 
-<!-- SiteSearch Google -->
-
-<form class="baidu-search" method="get" target="_blank">
-    <div class="search-wrap">
-        <div width="100%">
-            <div width="100%">
-                <input type="text" name="q" value=""/>
-                <input type="submit" src="/assets/images/search_bg.png" alt="Submit" width="80" height="24" value="搜索" />
-            </div>
-            <input type="hidden" name="domains" value="{{ site.url }}" />
-            <input type="hidden" name="sitesearch" value="{{ site.url }}" />
-            <input type="hidden" name="ie" value="utf-8" />
-            <input type="hidden" name="oe" value="utf-8" />
-            <input type="hidden" name="hl" value="zh-CN" />
-        </div>
-    </div>
-</form>
-
-
+<!-- SiteSearch Baidu -->
+<script type="text/javascript">(function () {
+    document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
+    var bdcs = document.createElement('script');
+    bdcs.type = 'text/javascript';
+    bdcs.async = true;
+    bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=3246382558278827542' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date() / 3600000);
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(bdcs, s);
+})();
+</script>
 <!-- SiteSearch Baidu -->
 
 <ol class="time-line">

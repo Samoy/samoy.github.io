@@ -165,4 +165,4 @@ class Register extends Component {
 
 注:其他第三方库若出现类似问题，解决方法同上。
 
-接下来解释一下，为什么会出现这个问题：首先`react-native`在0.44版本以后将`View.PropTypes.style`属性修改成了`ViewPropTypes.style`，而类似于`react-native-scrollable-tab-view`这样的第三方库为了适配`react-native`新版本，也做了如此修改，然而由于我们的`package-json`文件中第三方库版本描述类似于`"^0.6.0"`，而这个`^`号表示指定从左面起第一个非零位置的范围。比如:`"^0.6.0"`表示你下载的版本是区间为`[0.6.0,0.7.0)`的最新版本。现在答案就很明显了，你只需要将`pack-json`中将第三方库的版本指定为你最初添加的版本比如我的就是`"react-native-scrollable-tab-view": "0.6.0"`,去掉了这个`^`号，表示指定了这`0.6.0`版本。关于版本号的解释，参见![https://segmentfault.com/q/1010000006124708/a-1020000006124855](https://segmentfault.com/q/1010000006124708/a-1020000006124855)。
+接下来解释一下，为什么会出现这个问题：首先`react-native`在0.44版本以后将`View.PropTypes.style`属性修改成了`ViewPropTypes.style`，而类似于`react-native-scrollable-tab-view`这样的第三方库为了适配`react-native`新版本，也做了如此修改，然而由于我们的`package-json`文件中第三方库版本描述类似于`"^0.6.0"`，而这个`^`号表示指定从左面起第一个非零位置的范围。比如:`"^0.6.0"`表示你下载的版本是区间为`[0.6.0,0.7.0)`的最新版本。现在答案就很明显了，你只需要将`pack-json`中将第三方库的版本指定为你最初添加的版本比如我的就是`"react-native-scrollable-tab-view": "0.6.0"`,去掉了这个`^`号，表示指定了这`0.6.0`版本。关于版本号的解释，参见[https://segmentfault.com/q/1010000006124708/a-1020000006124855](https://segmentfault.com/q/1010000006124708/a-1020000006124855)。

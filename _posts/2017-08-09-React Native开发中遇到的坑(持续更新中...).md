@@ -94,7 +94,7 @@ class myComponent extends Component{
 ```
 如此便可通过更改dataSource触发renderRow方法。
 
-### 6、在ScrollView中切换输入框&lt;TextInouput&gt;，为什么需要点击两次才能实现？
+### 6、在ScrollView中切换输入框&lt;TextInput&gt;，为什么需要点击两次才能实现？
 答:这是由于ScrollView也会相应点击事件，解决这个问题,只需要在ScrollView组件中添加两个属性:`keyboardShouldPersistTaps={true} `
 和`keyboardDismissMode={'on-drag'}`即可。
 
@@ -147,10 +147,10 @@ class Register extends Component {
 }
 ```
 ### 9、出现“‘View’has no propType for native prop 'RCTView.flexGrow' of native type...”红屏的解决办法
-答:这是因为同时在做两个项目，当退出第一个项目时，npm仍然为第一个项目的，所以启动第二个项目时就会报错。如下图:
+答:这是因为同时在做两个项目，当退出第一个项目时，packager仍然为第一个项目的，所以启动第二个项目时就会报错。如下图:
 ![红屏提示](http://img.blog.csdn.net/20161017113732973)
 。
-此时，只需要打开终端，将运行中的npm关闭，输入命令`react-native run-ios`或`react-native run-android` 重新启动npm即可。
+此时，只需要打开终端，将运行中的npm关闭，输入命令`react-native run-ios`或`react-native run-android` 重新启动packager即可。
 ### 10、出现“underfined is not an object(evaluating 'ViewProptypes.style')”红屏的解决版本
 答:首先回答几个问题：
 1. 是否使用了`react-native-scrollable-tab-view`第三方库？
@@ -165,4 +165,4 @@ class Register extends Component {
 
 注:其他第三方库若出现类似问题，解决方法同上。
 
-接下来解释一下，为什么会出现这个问题：首先`react-native`在0.44版本以后将`View.PropTypes.style`属性修改成了`ViewPropTypes.style`，而类似于`react-native-scrollable-tab-view`这样的第三方库为了适配`react-native`新版本，也做了如此修改，然而由于我们的`package-json`文件中第三方库版本描述类似于`"^0.6.0"`，而这个`^`号表示指定从左面起第一个非零位置的范围。比如:`"^0.6.0"`表示你下载的版本是区间为`[0.6.0,0.7.0)`的最新版本。现在答案就很明显了，你只需要将`pack-json`中将第三方库的版本指定为你最初添加的版本比如我的就是`"react-native-scrollable-tab-view": "0.6.0"`,去掉了这个`^`号，表示指定了这`0.6.0`版本。关于版本号的解释，参见https://segmentfault.com/q/1010000006124708/a-1020000006124855。
+接下来解释一下，为什么会出现这个问题：首先`react-native`在0.44版本以后将`View.PropTypes.style`属性修改成了`ViewPropTypes.style`，而类似于`react-native-scrollable-tab-view`这样的第三方库为了适配`react-native`新版本，也做了如此修改，然而由于我们的`package-json`文件中第三方库版本描述类似于`"^0.6.0"`，而这个`^`号表示指定从左面起第一个非零位置的范围。比如:`"^0.6.0"`表示你下载的版本是区间为`[0.6.0,0.7.0)`的最新版本。现在答案就很明显了，你只需要将`pack-json`中将第三方库的版本指定为你最初添加的版本比如我的就是`"react-native-scrollable-tab-view": "0.6.0"`,去掉了这个`^`号，表示指定了这`0.6.0`版本。关于版本号的解释，参见![https://segmentfault.com/q/1010000006124708/a-1020000006124855](https://segmentfault.com/q/1010000006124708/a-1020000006124855)。

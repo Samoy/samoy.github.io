@@ -150,7 +150,7 @@ class Register extends Component {
 答:这是因为同时在做两个项目，当退出第一个项目时，packager仍然为第一个项目的，所以启动第二个项目时就会报错。如下图:
 ![红屏提示](http://img.blog.csdn.net/20161017113732973)
 。
-此时，只需要打开终端，将运行中的npm关闭，输入命令`react-native run-ios`或`react-native run-android` 重新启动packager即可。
+此时，只需要打开终端，将运行中的packager关闭，输入命令`react-native run-ios`或`react-native run-android` 重新启动packager即可。
 ### 10、出现“underfined is not an object(evaluating 'ViewProptypes.style')”红屏的解决版本
 答:首先回答几个问题：
 1. 是否使用了`react-native-scrollable-tab-view`第三方库？

@@ -20,3 +20,7 @@ date: 2017-09-10 08:35:24.000000000 +08:00
  1. 通过方案1，我们知道在pod setup过程中，pod其实是在安装第三方库的索引目录，因此我们可以直接从githups上下载索引目录拷进repos文件夹。
  2. 前往https://github.com/CocoaPods/Specs，下载该索引，然后拷进repos文件夹。目录结构如下图所示:![这里写图片描述](http://img.blog.csdn.net/20160719163514531)
  3.  完全退出终端，重启终端，pod功能即可正常使用。
+ 
+另:安装cocoapods提示没有权限的解决办法如下(You don't have write permissions for the /usr/bin directory.):
+执行该命令即可:
+**`sudo gem install cocoapods -n /usr/local/bin`**

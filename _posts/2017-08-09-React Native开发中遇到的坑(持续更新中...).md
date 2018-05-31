@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ReactNative开发中遇到的坑(持续更新中...)
-categories: ReactNative
+categories: React/ReactNative
 date: 2017-08-09 15:04:24.000000000 +08:00
 ---
 

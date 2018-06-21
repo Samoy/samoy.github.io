@@ -18,6 +18,7 @@ date: 2018-01-04 22:50:00.000000000 +08:00
         {% endfor %}
         {% else %}
         {% for category in categories_list %}
+        {% if category[0] != 'Others'%}
         <li>
             <a style="font-family:ubuntu; color:#666;font-weight:bold"
                href="{{ site.url }}/{{ site.categories_path }}#{{ category[0] | replace:' ','-' }}-ref"
@@ -25,7 +26,17 @@ date: 2018-01-04 22:50:00.000000000 +08:00
                 {{ category[0] }} <span class="badge pull-right">{{ category[1].size }}</span>
             </a>
         </li>
+        {% else %}
+        {%assign other = category %}
+        {% endif %}
         {% endfor %}
+        <li>
+            <a style="font-family:ubuntu; color:#666;font-weight:bold"
+               href="{{ site.url }}/{{ site.categories_path }}#{{other[0] | replace:' ','-' }}-ref"
+               data-toggle="tab">
+                {{ other[0] }} <span class="badge pull-right">{{ other[1].size }}</span>
+            </a>
+        </li>
         {% endif %}
         {% assign categories_list = nil %}
     </ul>
@@ -33,6 +44,7 @@ date: 2018-01-04 22:50:00.000000000 +08:00
 <!-- Tab panes -->
 <div class="tab-content col-sm-9 col-xs-6">
     {% for category in site.categories %}
+    {% if category[0] != 'Others'%}
     <div class="tab-pane" id="{{ category[0] | replace:' ','-' }}-ref">
         <h2 style="margin-top: 0px;font-weight:bold;font-family: ubuntu;">{{ category[0]}}</h2>
         <ul class="list-unstyled">
@@ -42,14 +54,36 @@ date: 2018-01-04 22:50:00.000000000 +08:00
             {% if group == null or group == node.group %}
             <li style="line-height: 35px;"><a href="{{ site.url }}{{node.url}}"
                                               style="font-family: 'Raleway', sans-serif; color:#333;font-weight:bold;font-size: larger">{{node.title}}</a>
-                <span class="text-muted" style="font-size: small">- {{ node.date | date: "%F" }}</span></li>
+                <span class="text-muted" style="font-size: small">- {{ node.date | date: "%F" }}</span>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            {% assign pages_list = nil %}
+        </ul>
+    </div>
+    {% else %}
+    {%assign other = category %}
+    {% endif %}
+    {% endfor %}
+    <div class="tab-pane" id="{{ other[0] | replace:' ','-' }}-ref">
+        <h2 style="margin-top: 0px;font-weight:bold;font-family: ubuntu;">{{ other[0]}}</h2>
+        <ul class="list-unstyled">
+            {% assign pages_list = other[1] %}
+            {% for node in pages_list %}
+            {% if node.title != null %}
+            {% if group == null or group == node.group %}
+            <li style="line-height: 35px;"><a href="{{ site.url }}{{node.url}}"
+                                              style="font-family: 'Raleway', sans-serif; color:#333;font-weight:bold;font-size: larger">{{node.title}}</a>
+                <span class="text-muted" style="font-size: small">- {{ node.date | date: "%F" }}</span>
+            </li>
             {% endif %}
             {% endif %}
             {% endfor %}
             {% assign pages_list = nil %}
         </ul>
     </div>
-    {% endfor %}
 </div>
 
 

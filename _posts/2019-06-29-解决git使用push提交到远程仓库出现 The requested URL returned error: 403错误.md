@@ -1,0 +1,19 @@
+---
+layout: post
+title: 解决git使用push提交到远程仓库出现 The requested URL returned error: 403 错误
+categories: Others
+date: 2019-06-29 10:31:00.000000000 +08:00
+---
+
+
+## 问题出现
+由于电脑之前切换过github账号,此次git clone的项目是原有账号的项目，然后提交到远程仓库时就出现了题目上所说的错误。
+
+## 解决方案
+打开cmd，输入命令：`rundll32.exe keymgr.dll,KRShowKeyMgr`，出现存储的用户名和密码窗口
+将github相关的条目删除
+重新执行命令：`git push -u origin master`，提示输入账户名及密码后，成功。
+
+## 参考资料
+
+> <https://blog.csdn.net/weixin_33701294/article/details/86784224>

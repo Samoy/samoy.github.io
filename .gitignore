@@ -11,3 +11,5 @@ gen
 _site/
 .jekyll-metadata
 Gemfile.lock
+# Bundle config
+.bundle

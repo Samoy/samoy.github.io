@@ -1,7 +1,7 @@
 ---
 layout: post
 title: iOS一个弹出的时间选择器视图(UIDatePicker)
-categories: iOS
+category: iOS
 date: 2016-03-09 08:20:13.000000000 +08:00
 ---
 效果图:

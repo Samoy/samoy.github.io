@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 如何解决"Adb not responding"的问题
-categories: Android
+category: Android
 date: 2016-07-06 11:45:24.000000000 +08:00
 ---
 <p>今天在写Demo的时候，发现程序包名不合适，就Rename了一下，然而却出现了题目中所提到的问题，Genymotion模拟器加载不出来，初步以为是模拟器路径不对，更改了一下路径，然而并没什么卵用。</p>

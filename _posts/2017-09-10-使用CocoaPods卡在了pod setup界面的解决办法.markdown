@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 使用CocoaPods卡在了"pod setup"界面的解决办法
-categories: iOS
+category: iOS
 date: 2017-09-10 08:35:24.000000000 +08:00
 ---
 有时候，我们在执行`pod install`或`pod search`命令时，会在终端偶现卡在'pod setup'界面的情况，

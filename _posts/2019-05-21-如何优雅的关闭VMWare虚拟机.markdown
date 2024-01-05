@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 如何优雅的关闭VMWare虚拟机
-categories: Others
+category: Others
 date: 2019-05-21 14:57:00.000000000 +08:00
 ---
 

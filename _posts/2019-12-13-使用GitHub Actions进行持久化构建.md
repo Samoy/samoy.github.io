@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 使用GitHub Actions进行持久化构建
-categories: Others
+category: Others
 date: 2019-12-13 15:32:00.000000000 +08:00
 ---
 

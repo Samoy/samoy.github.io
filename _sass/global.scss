@@ -280,14 +280,20 @@ td:last-child {
 }
 
 .content-wrapper {
-  z-index: 800;
   width: 70%;
   margin-left: 30%;
+  position: relative;
 }
 
 .content-wrapper__inner {
   margin: 0 10%;
   padding: 50px 0;
+  position: relative;
+}
+
+.post-container{
+  position: relative;
+  z-index: 700;
 }
 
 .footer {
@@ -296,6 +302,8 @@ td:last-child {
   border-top: 2px solid $gray-light;
   font-size: .7em;
   color: lighten($gray-dark, 10%);
+  z-index: 700;
+  position: relative;
 }
 
 .footer__copyright {
@@ -349,4 +357,10 @@ hr {
 
 .read-more-footer {
   margin-top: 12px;
+}
+
+.particles-js-canvas-el{
+  position: fixed;
+  inset: 0;
+  z-index: 600;
 }

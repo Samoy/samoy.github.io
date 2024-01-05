@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Typescript装饰器简介（上）
-categories: Web
+category: Web
 date: 2024-01-03 15:40:13.000000000 +08:00
 ---
 

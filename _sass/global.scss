@@ -296,6 +296,11 @@ td:last-child {
   z-index: 700;
 }
 
+.main-post-list{
+  position: relative;
+  z-index: 800;
+}
+
 .footer {
   display: block;
   padding: 2em 0 0 0;

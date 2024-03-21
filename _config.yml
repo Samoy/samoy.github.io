@@ -28,7 +28,7 @@ nav:
     - {title: 关于, description: 关于个人, in_site: true,url: '/about'}
 
 # Pagination
-plugins: [jekyll-paginate, jekyll-sitemap]
+plugins: [jekyll-paginate, jekyll-sitemap, jekyll-mermaid]
 paginate: 10
 paginate_path: "page/:num/"
 
@@ -36,6 +36,9 @@ paginate_path: "page/:num/"
 markdown: kramdown
 kramdown:
   input: GFM
+
+#mermaid
+mermaid: true
 
 #categories
 categories_path: categories

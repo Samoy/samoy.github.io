@@ -1,6 +1,6 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
+<script type="text/javascript" src="//unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/js/particles.js"></script>
 
@@ -14,3 +14,31 @@
     ga('send', 'pageview');
 </script>
 {% endif %}
+
+<script>
+    $(document).ready(function () {
+        var subTitle = "{{ site.subtitle }}"
+        var ele = document.querySelector('.panel-cover__subtitle.panel-subtitle');
+        var typed = new Typed(ele, {
+            strings: subTitle.split(" "),
+            typeSpeed: 100,
+            loop: true,
+            backSpeed: 50,
+            backDelay: 1000,
+        });
+        if(location.pathname !== "/" || location.href.indexOf("#") >- 1){
+            reset();
+            return;
+        }
+        $(window).click(function (ev) {
+            const parent = $(ev.target).parent();
+            if (parent.hasClass('navigation__item')) {
+                reset();
+            }
+        });
+        function reset() {
+            typed.destroy();
+            ele.innerHTML = subTitle;
+        }
+    })
+</script>

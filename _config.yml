@@ -1,6 +1,8 @@
 # Basic
 title: Samoy的小窝
-subtitle: 千里之行,始于足下 万行代码,始于指下
+subtitle:
+  - 千里之行,始于足下
+  - 万行代码,始于指下
 welcome_message: 欢迎光临Samoy的小窝
 description: 一只默默工作的程序猿
 creator: <a href="/about">Samoy</a>

@@ -97,126 +97,92 @@ class LRU {
 
 ## 5. 代码改造
 ```typescript
-interface Node {
-  key: string;
-  value: any;
-  next?: Node;
-  prev?: Node;
+class LRU {
+    private size: number = 0;
+    private readonly capacity: number;
+    private linkedList: DoubleLinkedList = new DoubleLinkedList();
+    private cache: Map<string, DoubleLinkedNode> = new Map<string, DoubleLinkedNode>();
+
+    constructor(capacity: number) {
+        this.capacity = capacity;
+    }
+
+    get(key: string): DoubleLinkedNode {
+        const node = this.cache.get(key);
+        // 如果key存在，则将该节点从队列中移除并插入到队列头部
+        if (node !== undefined) {
+            this.linkedList.moveToHead(node);
+        }
+        return node;
+    }
+
+    put(key: string, value: number): void {
+        const node = this.cache.get(key);
+        // 如果key存在，则更新其对应的value，同时将其从其当前位置移除并插入到队列头部，并在缓存中更新其位置引用
+        if (node !== undefined) {
+            node.value = value;
+            this.linkedList.moveToHead(node);
+        } else {
+            // 否则，则将其添加到缓存中，并移动到队列首部
+            const newNode = new DoubleLinkedNode(key, value);
+            this.cache.set(key, newNode);
+            this.linkedList.addToHead(newNode);
+            ++this.size;
+            // 如果缓存已满，则将队列尾部的元素移除
+            if (this.size > this.capacity) {
+                const node = this.linkedList.removeTail();
+                this.cache.delete(node.key);
+                --this.size;
+            }
+        }
+    }
 }
 
-class DoubleLinkedList<T extends Node> {
-  #head: Node | undefined;
-  #tail: Node | undefined;
+class DoubleLinkedNode {
+    key: string;
+    value: any;
+    prev?: DoubleLinkedNode;
+    next?: DoubleLinkedNode;
 
-  public get head(): Node | undefined {
-    return this.#head;
-  }
-
-  public get tail(): Node | undefined {
-    return this.#tail;
-  }
-
-  moveToHead(node: T) {
-    if (node == this.#head) return;
-    if (node.prev !== undefined) {
-      node.prev.next = node.next;
+    constructor(key?: string, value?: any) {
+        this.key = key;
+        this.value = value;
     }
-    if (node.next !== undefined) {
-      node.next.prev = node.prev;
-    }
-
-    if (this.#head !== undefined) {
-      this.#head.prev = node;
-      node.next = this.#head;
-    } else {
-      this.#tail = node;
-    }
-    this.#head = node;
-    node.prev = undefined;
-  }
-
-  removeNode(node: T) {
-    if (node.prev !== undefined) {
-      node.prev.next = node.next;
-    }
-    if (node.next !== undefined) {
-      node.next.prev = node.prev;
-    }
-    if (this.#head === node) {
-      this.#head = node.next;
-    }
-    if (this.#tail === node) {
-      this.#tail = node.prev;
-    }
-  }
-
-  appendNode(node: T) {
-    if (this.#head === undefined) {
-      this.#head = node;
-      this.#tail = node;
-      node.prev = undefined;
-      node.next = undefined;
-    } else {
-      this.#tail!.next = node;
-      node.prev = this.#tail;
-      this.#tail = node;
-      node.next = undefined;
-    }
-  }
 }
 
-export class LRU {
-  readonly capacity: number;
-  private cache: Map<string, Node>;
-  // private doubleLinkedList: Array<Node>;
-  private doubleLinkedList: DoubleLinkedList<Node>;
+class DoubleLinkedList {
+    private readonly dummyHead: DoubleLinkedNode;
+    private readonly dummyTail: DoubleLinkedNode;
 
-  constructor(capacity: number) {
-    this.capacity = capacity;
-    this.cache = new Map();
-    this.doubleLinkedList = new DoubleLinkedList();
-  }
-
-  get(key: string): Node | undefined {
-    const node = this.cache.get(key);
-    // 如果key存在，则将该节点从队列中移除并插入到队列头部
-    if (node !== undefined) {
-      // this.doubleLinkedList.splice(this.doubleLinkedList.indexOf(node), 1);
-      // this.doubleLinkedList.unshift(node);
-      this.doubleLinkedList.moveToHead(node);
-      return node;
+    constructor() {
+        this.dummyHead = new DoubleLinkedNode();
+        this.dummyTail = new DoubleLinkedNode();
+        this.dummyHead.next = this.dummyTail;
+        this.dummyTail.prev = this.dummyHead;
     }
-    // 如果key不存在，则返回undefined
-    return undefined;
-  }
 
-  put(key: string, value: any) {
-    let node: Node | undefined = this.cache.get(key);
-    // 如果key存在，则更新其对应的value，同时将其从其当前位置移除并插入到队列头部，并在缓存中更新其位置引用
-    if (node !== undefined) {
-      // this.doubleLinkedList.splice(this.doubleLinkedList.indexOf(node), 1);
-      // this.doubleLinkedList.unshift(node);
-      this.doubleLinkedList.moveToHead(node);
-      node.value = value;
-    } else {
-      // 否则，如果缓存已满，则将队列尾部的元素移除
-      if (this.cache.size >= this.capacity) {
-        // const last = this.doubleLinkedList.pop();
-        const last = this.doubleLinkedList.tail;
-        this.doubleLinkedList.removeNode(last!);
-        this.cache.delete(last!.key);
-      }
-      // 创建新节点
-      node = {
-        key,
-        value,
-      };
+    addToHead(node: DoubleLinkedNode) {
+        node.prev = this.dummyHead;
+        node.next = this.dummyHead.next;
+        this.dummyHead.next.prev = node;
+        this.dummyHead.next = node;
     }
-    // 更新缓存
-    this.cache.set(key, node);
-    // 将新节点插入队列头部
-    this.doubleLinkedList.appendNode(node);
-  }
+
+    removeNode(node: DoubleLinkedNode) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    moveToHead(node: DoubleLinkedNode) {
+        this.removeNode(node);
+        this.addToHead(node);
+    }
+
+    removeTail(): DoubleLinkedNode {
+        const node = this.dummyTail.prev;
+        this.removeNode(node);
+        return node;
+    }
 }
 ```
 ## 6. 单元测试
@@ -259,8 +225,8 @@ describe("Test LRU", () => {
 已全部测试通过，说明我们所编写的算法是可行的，解析我们继续询问ChatCPT看看我们这段代码是否符合要求，所得出的结论是：**合格**。
 > 这段代码实现了基于双向链表的LRU（最近最少使用）缓存淘汰算法，整体来看，它通过LRU类管理一个固定容量的缓存，并使用了`DoubleLinkedList`类来维护缓存项的顺序。以下是代码实现的功能点：
 > 
-> 1. `Node`接口定义了缓存项的数据结构，包含键值对以及前后指针用于构建双向链表。
-> 2. `DoubleLinkedList`类实现了双向链表的基本操作：将节点移到头部（`moveToHead`）、从链表中移除节点（`removeNode`）和在链表尾部追加新节点（`appendNode`）。
+> 1. `DoubleLinkedNode`类定义了缓存项的数据结构，包含键值对以及前后指针用于构建双向链表。
+> 2. `DoubleLinkedList`类实现了双向链表的基本操作：将节点移到头部（`moveToHead`）、从链表中移除节点（`removeNode`）和在链表头部追加新节点（`addToHead`）。
 > 3. `LRU`类包含了缓存的核心逻辑：
 > * 初始化时设定缓存容量并创建一个`Map`作为实际存储数据的容器及一个双向链表实例。
 > * `get`方法首先查找给定`key`对应的节点，若存在则将其移动到链表头部，并返回该节点。

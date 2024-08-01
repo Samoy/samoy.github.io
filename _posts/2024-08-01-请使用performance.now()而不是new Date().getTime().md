@@ -17,7 +17,7 @@ console.log('doSomething一共花费的时间为:', time2 - time1);
 一般来说，这样做是不会出现什么问题的，但是假如`doSomething()`函数执行时间非常长，那么就会出现异常。  
 考虑以下场景:
 
-> 当在执行`doSomething()`函数时，我手动或者系统NTP软件把系统时间修改了，那么`time2`和`time1`之间的差值就会变得不准确。
+> 当在执行`doSomething()`函数时，我手动或者使用NTP软件把系统时间修改了，那么`time2`和`time1`之间的差值就会变得不准确。
 
 所以`new Date()`这个函数是不可靠的，它受系统时间影响较大。因此我们需要另寻他法。幸运的是，WEB
 API给我们提供了`performance.now()`这个函数。  

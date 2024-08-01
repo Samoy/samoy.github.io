@@ -5,7 +5,7 @@ category: Web
 date: 2024-08-01 15.50.00.000000000 +08:00
 ---
 
-我们经常会遇到这样的需求，即比较两个时间点的时间差，大多数同学都会使用使用以下方法：
+在Web开发过程中，我们经常会遇到这样的需求，即比较两个时间点的时间差，大多数同学都会使用以下方法：
 
 ```javascript
 const time1 = new Date().getTime();
@@ -21,7 +21,7 @@ console.log('doSomething一共花费的时间为:', time2 - time1);
 
 所以`new Date()`这个函数是不可靠的，它受系统时间影响较大。因此我们需要另寻他法。幸运的是，WEB
 API给我们提供了`performance.now()`这个函数。  
-`performance.now()`表示从页面加载到当前时间点所经常过的毫秒数。它是以一个恒定的速率慢慢增加的，不会受系统时间影响。
+`performance.now()`表示从页面加载到当前时间点所经过的毫秒数。它是以一个恒定的速率慢慢增加的，不会受系统时间影响。
 因此我们可以用这个函数来解决上面的需求。代码如下：
 
 ```javascript
@@ -32,5 +32,5 @@ console.log('doSomething一共花费的时间为:', time2 - time1);
 ```
 
 这样我们就解决了时间间隔不准确的问题。但是`performance.now()`
-这个函数为了安全性考虑，它也不是百分百精确的。但对于日常场景，已经够用了。  
+这个函数为了安全性考虑，它也不是百分百精确的。但对于日常场景来说，已经足够用了。  
 相关文献请参考[MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/now)

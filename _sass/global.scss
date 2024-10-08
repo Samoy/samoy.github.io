@@ -294,6 +294,7 @@ td:last-child {
 .post-container{
   position: relative;
   z-index: 700;
+  min-height: calc(100vh - 11em);
 }
 
 .main-post-list{

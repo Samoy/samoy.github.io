@@ -5,8 +5,12 @@ date: 2018-01-04 22:50:00.000000000 +08:00
 keywords: Samoy, samoy,目录
 excerpt: 博客时间线
 ---
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
-<!--todo:站内功能暂不实现-->
+<!--站内搜索-->
+<div class="search-box">
+    <input type="text" id="search-input" placeholder="搜索博文">
+</div>
 
 <ol class="time-line">
     <hr/>
@@ -22,7 +26,7 @@ excerpt: 博客时间线
     </li>
     {% endif %}
     {% endfor %}
-    <!--置顶-->
+    <!--不置顶-->
     {% for post in site.posts %}
     {% if post.istop %}
     {% else %}
@@ -36,3 +40,23 @@ excerpt: 博客时间线
     {% endif %}
     {% endfor %}
 </ol>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        const posts = $(".time-line li");
+        const input = $("#search-input");
+        input.on("input", function () {
+            const value = $(this).val().toLowerCase();
+            posts.each(function () {
+                const post = $(this);
+                const title = post.find("h1").text().toLowerCase();
+                const category = post.find(".tags").text().toLowerCase();
+                if (title.indexOf(value) > -1 || category.indexOf(value) > -1) {
+                    post.show();
+                } else {
+                    post.hide();
+                }
+            })
+        })
+    })
+</script>

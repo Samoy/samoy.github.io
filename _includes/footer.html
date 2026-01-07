@@ -8,20 +8,56 @@
                 target="_blank">Vno - Jekyll</a> 作为主题。<span
                 id="busuanzi_container_site_pv"> 总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>- &copy; {{site.time | date: "%Y"}}</span>
     </footer>
-    {%- if site.mermaid -%}
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
-    <script type="text/javascript">
-      (function () {
-          mermaid.init({ startOnLoad: true }, "pre code.language-mermaid", function () {
-            var codeBlock = document.querySelector('code.language-mermaid');
-            var preBlock = codeBlock.parentNode;
+{%- if site.mermaid -%}
+<script>
+(function () {
+  // 配置：优先使用 site.mermaid_url，如果没有则回退到常见 CDN 地址
+  var mermaidSrc = '{{ site.mermaid_url | default: "https://unpkg.com/mermaid@10/dist/mermaid.min.js" }}';
 
-            codeBlock.style.backgroundColor = 'initial';
-            preBlock.style.border = 'none';
-            preBlock.style.textAlign = 'center';
-            preBlock.style.backgroundColor = 'initial';
-          });
-        })()
-    </script>
-    {%- endif -%}
+  function loadMermaidAndInit() {
+    // 如果已经存在 mermaid（比如浏览器缓存或其它脚本已加载），直接 init
+    if (window.mermaid) {
+      try {
+        // 确保不使用 startOnLoad 的自动初始化（防止重复）
+        if (typeof mermaid.initialize === 'function') mermaid.initialize({ startOnLoad: false });
+        if (typeof mermaid.init === 'function') mermaid.init();
+      } catch (e) { console.error('mermaid init error', e); }
+      return;
+    }
+
+    var s = document.createElement('script');
+    s.src = mermaidSrc;
+    s.async = true;
+    // onload 在脚本完全可用后触发，安全地初始化
+    s.onload = function () {
+      try {
+        if (window.mermaid && typeof window.mermaid.initialize === 'function') {
+          mermaid.initialize({ startOnLoad: false });
+        }
+        if (window.mermaid && typeof window.mermaid.init === 'function') {
+          mermaid.init();
+        }
+      } catch (e) { console.error('mermaid init error', e); }
+    };
+    s.onerror = function () {
+      console.error('Failed to load mermaid from', mermaidSrc);
+    };
+    document.head.appendChild(s);
+  }
+
+  // 仅当页面中存在 mermaid 图表标记时才加载脚本，避免不必要的下载
+  function shouldLoadMermaid() {
+    return document.querySelector('.language-mermaid') !== null || document.querySelector('[data-mermaid]') !== null;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      if (shouldLoadMermaid()) loadMermaidAndInit();
+    }, { once: true });
+  } else {
+    if (shouldLoadMermaid()) loadMermaidAndInit();
+  }
+})();
+</script>
+{%- endif -%}
 </section>

@@ -1,4 +1,5 @@
-particlesJS("body", {
+$.ready(function(){
+  particlesJS("body", {
   particles: {
     number: {
       value: 100,
@@ -103,3 +104,4 @@ particlesJS("body", {
   },
   retina_detect: true,
 });
+})

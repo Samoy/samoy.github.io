@@ -1,5 +1,5 @@
 <header class="panel-cover {% if page.layout == 'post' or page.layout == 'page' %}panel-cover--collapsed{% endif %}" style="background-image: url('/assets/images/background-cover.jpg')">
-  <div class="panel-main">
+  <div class="panel-main" style="position:relative">
 
     <div class="panel-main__inner panel-inverted">
     <div class="panel-main__content">
@@ -39,5 +39,8 @@
     {% else %}
     <div class="panel-cover--overlay cover-disabled"></div>
     {% endif %}
+  <footer style="position:absolute;right:12px;bottom:12px;">
+    <a style="font-size:12px;color:#ffffff80;" href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2024096491号-2</a>
+  </footer>
   </div>
 </header>

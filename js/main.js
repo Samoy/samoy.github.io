@@ -48,15 +48,15 @@ $(document).ready(function () {
     }
 
     $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
-    // 切换显示备案信息
-    function toggleIcpInfo() {
-      if (location.hash || location.pathname !== '/') {
-        $(".page-main-icp-info").hide();
-      } else {
-        $(".page-main-icp-info").show();
-      }
-    }
-    toggleIcpInfo();
-    $(window).on('hashchange', toggleIcpInfo);
   });
+  // 切换显示备案信息
+  function toggleIcpInfo() {
+    if (location.hash || location.pathname !== '/') {
+      $(".page-main-icp-info").hide();
+    } else {
+      $(".page-main-icp-info").show();
+    }
+  }
+  toggleIcpInfo();
+  $(window).on('hashchange', toggleIcpInfo);
 });

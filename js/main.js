@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-  $('a.blog-button').click(function() {
+  $('a.blog-button').click(function () {
     // If already in blog, return early without animate overlay panel again.
     if (location.hash && location.hash == "#blog") return;
     if ($('.panel-cover').hasClass('panel-cover--collapsed')) return;
@@ -9,8 +9,8 @@ $(document).ready(function() {
     if (currentWidth < 960) {
       $('.panel-cover').addClass('panel-cover--collapsed');
     } else {
-      $('.panel-cover').css('max-width',currentWidth);
-      $('.panel-cover').animate({'max-width': '700px', 'width': '30%'}, 400, swing = 'swing', function() {} );
+      $('.panel-cover').css('max-width', currentWidth);
+      $('.panel-cover').animate({ 'max-width': '700px', 'width': '30%' }, 400, swing = 'swing', function () { });
     }
   });
 
@@ -23,9 +23,9 @@ $(document).ready(function() {
     $('.panel-cover').addClass('panel-cover--collapsed');
   }
 
-  $('.btn-mobile-menu__icon').click(function() {
+  $('.btn-mobile-menu__icon').click(function () {
     if ($('.navigation-wrapper').css('display') == "block") {
-      $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+      $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
         $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
       });
@@ -37,16 +37,26 @@ $(document).ready(function() {
     $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
   });
 
-  $('.navigation-wrapper .blog-button').click(function() {
+  $('.navigation-wrapper .blog-button').click(function () {
     if ($('.navigation-wrapper').css('display') == "block") {
-      $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+      $('.navigation-wrapper').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         $('.navigation-wrapper').toggleClass('visible animated bounceOutUp');
         $('.navigation-wrapper').off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
       });
 
       $('.navigation-wrapper').toggleClass('animated bounceInDown animated bounceOutUp');
     }
-    
+
     $('.btn-mobile-menu__icon').toggleClass('fa fa-list fa fa-angle-up animated fadeIn');
+    // 切换显示备案信息
+    function toggleIcpInfo() {
+      if (location.hash || location.pathname !== '/') {
+        $(".page-main-icp-info").hide();
+      } else {
+        $(".page-main-icp-info").show();
+      }
+    }
+    toggleIcpInfo();
+    $(window).on('hashchange', toggleIcpInfo);
   });
 });

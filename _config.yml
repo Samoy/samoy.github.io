@@ -55,7 +55,3 @@ social:
     rss: /feed.xml
     mail: samoy_young@163.com
 
-# Google Analytics
-ga:
-     id: UA-112019455-1
-     host: www.samoy.site

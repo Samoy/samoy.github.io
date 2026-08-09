@@ -1,6 +1,6 @@
 ﻿# Repository Guidelines
 
-This is **编程手札** (samoy.github.io), a personal blog built with [Astro](https://astro.build) (migrated from Jekyll; see `MIGRATION.md`). It deploys to GitHub Pages via GitHub Actions from the `master` branch. There is no test suite; verify locally before pushing.
+This is **编程手札** (samoy.github.io), a personal blog built with [Astro](https://astro.build). It deploys to GitHub Pages via GitHub Actions from the `master` branch. There is no test suite; verify locally before pushing.
 
 ## Project Structure
 
@@ -66,4 +66,4 @@ Keep commits small and focused. Pushes to `master` deploy to production via GitH
 
 - Site URL lives in `astro.config.mjs` (`site`); the domain is `public/CNAME` — keep them consistent.
 - Comment system (giscus), social links, navigation, and ICP numbers are all configured in `src/site.config.ts`.
-- Deploy source must be "GitHub Actions" in the repo's Pages settings (see `MIGRATION.md`).
+- Deploy source must be "GitHub Actions" in the repo's Pages settings.

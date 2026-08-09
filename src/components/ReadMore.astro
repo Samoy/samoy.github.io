@@ -1,0 +1,31 @@
+---
+import { formatDate, postUrl, type Post } from '../lib/posts';
+
+interface Props {
+  newer?: Post;
+  older?: Post;
+}
+
+const { newer, older } = Astro.props;
+
+const items = [
+  newer && { label: '最近的文章', post: newer },
+  older && { label: '更早的文章', post: older },
+].filter(Boolean) as { label: string; post: Post }[];
+---
+
+{items.length > 0 && (
+  <section class="read-more" aria-label="继续阅读">
+    {items.map((item) => (
+      <div class="read-more__item">
+        <span class="read-more__label">{item.label}</span>
+        <h3 class="read-more__title">
+          <a href={postUrl(item.post)}>{item.post.data.title}</a>
+        </h3>
+        <time class="read-more__date" datetime={item.post.data.date.toISOString()}>
+          {formatDate(item.post.data.date)} · {item.post.data.category}
+        </time>
+      </div>
+    ))}
+  </section>
+)}

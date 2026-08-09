@@ -1,0 +1,28 @@
+---
+import { siteConfig } from '../site.config';
+
+interface Props {
+  /** 备案信息展示规则：首页显示在侧栏首屏区，其他页面显示在页脚 */
+  showIcp?: boolean;
+}
+
+const { showIcp = false } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span>
+    本站点采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">知识共享 署名-非商业性使用-禁止演绎 4.0 国际 许可协议</a>
+  </span>
+  <span>
+    本站由 <a href="/about/">Samoy</a> 创建，基于 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 构建。
+    <span id="busuanzi_container_site_pv"> 总访问量 <span id="busuanzi_value_site_pv"></span> 次</span> · &copy; {year}
+  </span>
+  {showIcp && (
+    <span class="icp">
+      <a href={siteConfig.icp.miit.url} target="_blank" rel="noopener">{siteConfig.icp.miit.label}</a>
+      &nbsp;
+      <a href={siteConfig.icp.mps.url} target="_blank" rel="noopener">{siteConfig.icp.mps.label}</a>
+    </span>
+  )}
+</footer>

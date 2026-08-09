@@ -1,0 +1,76 @@
+---
+import Base from '../layouts/Base.astro';
+import Comments from '../components/Comments.astro';
+import ReadMore from '../components/ReadMore.astro';
+import { formatDate, plainExcerpt, postSlug, postUrl, getPosts } from '../lib/posts';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => {
+    const m = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-/);
+    if (!m) throw new Error(`文章文件名缺少日期前缀: ${post.id}`);
+    return {
+      // 与原 Jekyll permalink /:year/:month/:title/ 保持一致
+      params: { path: `${m[1]}/${m[2]}/${postSlug(post.id)}` },
+      props: {
+        post,
+        newer: posts[i - 1],
+        older: posts[i + 1],
+      },
+    };
+  });
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const url = postUrl(post);
+const description = post.data.excerpt ?? plainExcerpt(post.body, 160);
+---
+
+<Base
+  title={post.data.title}
+  description={description}
+  path={url}
+  type="article"
+  publishedTime={post.data.date.toISOString()}
+>
+  <article itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+      <div class="post-header__meta">
+        <time datetime={post.data.date.toISOString()} itemprop="datePublished">
+          {formatDate(post.data.date)}
+        </time>
+        <span class="chip">{post.data.category}</span>
+      </div>
+      <h1 itemprop="headline">{post.data.title}</h1>
+    </header>
+
+    <div class="post-body prose" itemprop="articleBody">
+      <Content />
+    </div>
+
+    <ReadMore newer={newer} older={older} />
+    <Comments />
+  </article>
+</Base>
+
+<!-- Mermaid 按需懒加载：仅当页面存在图表时拉取 -->
+<script is:inline>
+  (function () {
+    var blocks = document.querySelectorAll('pre.mermaid');
+    if (!blocks.length || window.mermaid) return;
+    import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
+      .then(function (mod) {
+        var mermaid = mod.default;
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default',
+        });
+        return mermaid.run({ nodes: blocks });
+      })
+      .catch(function (err) {
+        console.error('mermaid 加载失败', err);
+      });
+  })();
+</script>

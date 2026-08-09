@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import { formatDate, getPosts, groupByCategory, postUrl } from '../lib/posts';
+
+const posts = await getPosts();
+const groups = groupByCategory(posts);
+const total = posts.length;
+---
+
+<Base title="分类" description="博客分类" path="/categories/" wide>
+  <h1 class="page-title">分类</h1>
+  <p class="page-sub">{total} 篇手札，归入 {groups.length} 个分类。</p>
+
+  <div class="categories">
+    <nav class="categories__nav" aria-label="分类导航">
+      {groups.map(([category, list]) => (
+        <a href={`#${category}`}>
+          <span>{category}</span>
+          <span class="count">{list.length}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div>
+      {groups.map(([category, list]) => (
+        <section class="category-section" id={category}>
+          <h2>
+            {category} <span class="count">{list.length} 篇</span>
+          </h2>
+          <ul>
+            {list.map((post) => (
+              <li>
+                <a href={postUrl(post)}>{post.data.title}</a>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>

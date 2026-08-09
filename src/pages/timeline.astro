@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { formatDate, getPosts, postUrl } from '../lib/posts';
+
+const posts = await getPosts();
+const pinned = posts.filter((p) => p.data.istop);
+const rest = posts.filter((p) => !p.data.istop);
+const ordered = [...pinned, ...rest];
+---
+
+<Base title="目录" description="博客时间线" path="/timeline/" wide>
+  <h1 class="page-title">目录</h1>
+  <p class="page-sub">全部 {ordered.length} 篇手札，按时间倒序排列，置顶文章在前。</p>
+
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="搜索博文（标题或分类）" aria-label="搜索博文" />
+  </div>
+
+  <ol class="timeline">
+    {ordered.map((post) => (
+      <li
+        class:list={{ 'is-top': post.data.istop }}
+        data-search={`${post.data.title} ${post.data.category}`.toLowerCase()}
+      >
+        <h2 class="timeline__title">
+          <a href={postUrl(post)} title={`访问 ${post.data.title}`}>
+            {post.data.istop ? `[置顶]${post.data.title}` : post.data.title}
+          </a>
+        </h2>
+        <div class="timeline__meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          <span class="chip">{post.data.category}</span>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <p class="empty-tip" id="empty-tip" hidden>没有找到匹配的手札，换个关键词试试。</p>
+</Base>
+
+<script>
+  const input = document.getElementById('search-input') as HTMLInputElement | null;
+  const items = [...document.querySelectorAll<HTMLElement>('.timeline li')];
+  const emptyTip = document.getElementById('empty-tip');
+
+  input?.addEventListener('input', () => {
+    const value = input.value.trim().toLowerCase();
+    let visible = 0;
+    for (const li of items) {
+      const match = (li.dataset.search ?? '').includes(value);
+      li.hidden = !match;
+      if (match) visible++;
+    }
+    if (emptyTip) emptyTip.hidden = visible !== 0;
+  });
+</script>

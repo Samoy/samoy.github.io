@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import Pagination from '../components/Pagination.astro';
+import { getPosts } from '../lib/posts';
+import { siteConfig } from '../site.config';
+
+const posts = await getPosts();
+const pageSize = siteConfig.postsPerPage;
+const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
+const data = posts.slice(0, pageSize);
+const page = {
+  currentPage: 1,
+  lastPage,
+  url: { prev: undefined, next: lastPage > 1 ? '/page/2/' : undefined },
+};
+---
+
+<Base
+  isHome
+  path="/"
+  title={siteConfig.title}
+  description={`${siteConfig.description} · ${siteConfig.subtitle}`}
+>
+  <div class="section-head">
+    <h2>最近更新</h2>
+    <span class="count">共 {posts.length} 篇 · 第 1 页</span>
+  </div>
+
+  <ol class="post-list">
+    {data.map((post, i) => <PostCard post={post} index={i} />)}
+  </ol>
+
+  <Pagination page={page} />
+</Base>

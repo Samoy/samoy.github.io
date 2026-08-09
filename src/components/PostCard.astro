@@ -1,0 +1,26 @@
+---
+import { formatDate, plainExcerpt, postUrl, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+  /** 动画延迟序号，用于列表错峰入场 */
+  index?: number;
+}
+
+const { post, index = 0 } = Astro.props;
+const url = postUrl(post);
+const excerpt = post.data.excerpt ?? plainExcerpt(post.body);
+---
+
+<li class="post-card" style={`animation-delay: ${Math.min(index, 8) * 45}ms`}>
+  <div class="post-card__meta">
+    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+    <span class="chip">{post.data.category}</span>
+    {post.data.istop && <span class="chip chip--pin">置顶</span>}
+  </div>
+  <h2 class="post-card__title">
+    <a href={url} title={`访问 ${post.data.title}`}>{post.data.title}</a>
+  </h2>
+  <p class="post-card__excerpt">{excerpt}</p>
+  <a class="post-card__more" href={url}>继续阅读 →</a>
+</li>

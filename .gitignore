@@ -1,15 +1,27 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
+# Astro build output
+dist/
+.astro/
 
-# IntelliJ project files
-.idea
-out
-gen
-.sass-cache
-### Jekyll template
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# local tooling
+.remember/
+.jekyll-cache/
+.sass-cache/
 _site/
-.jekyll-metadata
-Gemfile.lock
-# Bundle config
-.bundle

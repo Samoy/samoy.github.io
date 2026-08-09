@@ -1,0 +1,24 @@
+---
+import { siteConfig } from '../site.config';
+const g = siteConfig.giscus;
+---
+
+<section class="comments">
+  <h5>欢迎在评论区留下您的见解~</h5>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={g.repo}
+    data-repo-id={g.repoId}
+    data-category={g.category}
+    data-category-id={g.categoryId}
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="0"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async
+  ></script>
+</section>

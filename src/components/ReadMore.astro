@@ -17,15 +17,15 @@ const items = [
 {items.length > 0 && (
   <section class="read-more" aria-label="继续阅读">
     {items.map((item) => (
-      <div class="read-more__item">
+      <a class="read-more__item" href={postUrl(item.post)}>
         <span class="read-more__label">{item.label}</span>
         <h3 class="read-more__title">
-          <a href={postUrl(item.post)}>{item.post.data.title}</a>
+          {item.post.data.title}
         </h3>
         <time class="read-more__date" datetime={item.post.data.date.toISOString()}>
           {formatDate(item.post.data.date)} · {item.post.data.category}
         </time>
-      </div>
+      </a>
     ))}
   </section>
 )}

@@ -74,3 +74,69 @@ const description = post.data.excerpt ?? plainExcerpt(post.body, 160);
       });
   })();
 </script>
+
+<!-- 代码块复制按钮：仅悬浮代码块时显示 -->
+<script is:inline>
+  (function () {
+    var COPY_SVG =
+      '<svg viewBox="0 0 1024 1024" width="16" height="16" fill="currentColor" aria-hidden="true">' +
+      '<path d="M853.333333 981.333333h-384c-72.533333 0-128-55.466667-128-128v-384c0-72.533333 55.466667-128 128-128h384c72.533333 0 128 55.466667 128 128v384c0 72.533333-55.466667 128-128 128z m-384-554.666666c-25.6 0-42.666667 17.066667-42.666666 42.666666v384c0 25.6 17.066667 42.666667 42.666666 42.666667h384c25.6 0 42.666667-17.066667 42.666667-42.666667v-384c0-25.6-17.066667-42.666667-42.666667-42.666666h-384z"/>' +
+      '<path d="M213.333333 682.666667H170.666667c-72.533333 0-128-55.466667-128-128V170.666667c0-72.533333 55.466667-128 128-128h384c72.533333 0 128 55.466667 128 128v42.666666c0 25.6-17.066667 42.666667-42.666667 42.666667s-42.666667-17.066667-42.666667-42.666667V170.666667c0-25.6-17.066667-42.666667-42.666666-42.666667H170.666667c-25.6 0-42.666667 17.066667-42.666667 42.666667v384c0 25.6 17.066667 42.666667 42.666667 42.666666h42.666666c25.6 0 42.666667 17.066667 42.666667 42.666667s-17.066667 42.666667-42.666667 42.666667z"/>' +
+      '</svg>';
+    var CHECK_SVG =
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M20 6 9 17l-5-5"/></svg>';
+
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+      } catch (e) {
+        /* 忽略复制失败 */
+      }
+      document.body.removeChild(ta);
+      return Promise.resolve();
+    }
+
+    document.querySelectorAll('.prose pre').forEach(function (pre) {
+      if (pre.classList.contains('mermaid') || pre.closest('.code-block')) return;
+
+      // 用外层容器承载按钮，避免按钮随代码横向滚动
+      var wrap = document.createElement('div');
+      wrap.className = 'code-block';
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(pre);
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'code-copy';
+      btn.setAttribute('aria-label', '复制代码');
+      btn.innerHTML = COPY_SVG;
+      btn.addEventListener('click', function () {
+        if (btn.classList.contains('is-copied')) return;
+        var text = pre.innerText.replace(/\n+$/, '');
+        copyText(text).then(function () {
+          btn.classList.add('is-copied');
+          btn.setAttribute('aria-label', '已复制');
+          btn.innerHTML = CHECK_SVG;
+          setTimeout(function () {
+            btn.classList.remove('is-copied');
+            btn.setAttribute('aria-label', '复制代码');
+            btn.innerHTML = COPY_SVG;
+          }, 2000);
+        });
+      });
+      wrap.appendChild(btn);
+    });
+  })();
+</script>

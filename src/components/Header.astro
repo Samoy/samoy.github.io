@@ -96,7 +96,7 @@ const socialLinks = [
   const sidebar = document.getElementById('sidebar');
   const menuBtn = sidebar?.querySelector<HTMLButtonElement>('.menu-btn');
   menuBtn?.addEventListener('click', () => {
-    const open = sidebar.classList.toggle('is-open');
+    const open = sidebar?.classList.toggle('is-open');
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.setAttribute('aria-label', open ? '收起菜单' : '打开菜单');
   });

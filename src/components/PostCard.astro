@@ -15,7 +15,7 @@ const excerpt = post.data.excerpt ?? plainExcerpt(post.body);
 <li class="post-card" style={`animation-delay: ${Math.min(index, 8) * 45}ms`}>
   <div class="post-card__meta">
     <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-    <span class="chip">{post.data.category}</span>
+    <a class="chip" href={`/categories/#${post.data.category}`}>{post.data.category}</a>
     {post.data.istop && <span class="chip chip--pin">置顶</span>}
   </div>
   <h2 class="post-card__title">

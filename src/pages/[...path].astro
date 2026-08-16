@@ -41,7 +41,7 @@ const description = post.data.excerpt ?? plainExcerpt(post.body, 160);
         <time datetime={post.data.date.toISOString()} itemprop="datePublished">
           {formatDate(post.data.date)}
         </time>
-        <span class="chip">{post.data.category}</span>
+        <a href={`/categories/#${post.data.category}`} class="chip">{post.data.category}</a>
       </div>
       <h1 itemprop="headline">{post.data.title}</h1>
     </header>

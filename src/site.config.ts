@@ -5,7 +5,7 @@ export const siteConfig = {
   welcome: '欢迎光临编程手札',
   description: '一只默默工作程序猿的编程日记',
   author: 'Samoy',
-  url: 'https://www.samoy.site',
+  url: 'https://www.samoy.fun',
   postsPerPage: 10,
   baiduVerification: 'codeva-rs0dgQT8lk',
   nav: [

@@ -6,7 +6,7 @@ import remarkCodeLang from './src/plugins/remark-code-lang.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.samoy.site',
+  site: 'https://www.samoy.fun',
   trailingSlash: 'always',
   build: {
     format: 'directory',

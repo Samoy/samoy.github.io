@@ -1,0 +1,67 @@
+name: Deploy to Huawei Cloud
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# 允许并发工作流
+permissions:
+  contents: read
+
+concurrency:
+  group: huawei-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # 仅 master 分支触发部署
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Deploy to Huawei Cloud via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete
+          path: dist/
+          remote_path: /var/www/samoy.fun/
+          remote_host: 121.37.130.3
+          remote_user: ${{ secrets.HUAWEI_SSH_USER }}
+          remote_key: ${{ secrets.HUAWEI_SSH_PRIVATE_KEY }}
+
+      - name: Verify deployment
+        run: |
+          echo "Deployment to Huawei Cloud completed!"
+          echo "Website should be accessible at: https://www.samoy.fun"
+          echo "Please verify the deployment manually."

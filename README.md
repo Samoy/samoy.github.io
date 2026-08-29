@@ -1,6 +1,6 @@
 # 编程手札
 
-Samoy 的个人技术博客，基于 [Astro](https://astro.build) 构建，静态输出，部署于 [GitHub Pages](https://www.samoy.site)
+Samoy 的个人技术博客，基于 [Astro](https://astro.build) 构建，静态输出，部署于 [GitHub Pages](https://www.samoy.fun)（备案域名 www.samoy.site 同步部署在华为云）
 
 ## 1、下载
 

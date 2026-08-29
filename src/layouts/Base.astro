@@ -27,6 +27,9 @@ const {
   isHome = false,
   wide = false,
 } = Astro.props;
+
+// 备案信息仅在与备案域名一致的构建中显示（www.samoy.site 部署在华为云）
+const showIcp = siteConfig.url.includes('samoy.site');
 ---
 
 <!doctype html>
@@ -36,11 +39,11 @@ const {
   </head>
   <body>
     <div class="shell">
-      <Header showIcp={isHome} />
+      <Header showIcp={showIcp && isHome} />
       <main class="main">
         <div class:list={['content', { 'content--wide': wide }]}>
           <slot />
-          <Footer showIcp={!isHome} />
+          <Footer showIcp={showIcp && !isHome} />
         </div>
       </main>
     </div>

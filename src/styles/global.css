@@ -482,6 +482,7 @@ button {
 
 .post-body {
   animation: fade-up 500ms ease 80ms both;
+  overflow-wrap: break-word;
 }
 
 /* ---------- Markdown 正文 ---------- */

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "别再死记 flex: 1 了：从空间分配彻底搞懂 Flex"
-category: 前端
+category: Web
 date: 2026-09-05 12:00:00 +08:00
 keywords: "CSS, Flex, flex-grow, flex-shrink, flex-basis, flex:1, flex:auto"
 excerpt: "flex-grow、flex-shrink、flex-basis 到底有什么区别？为什么 flex: 1 和 flex: auto 表现不同？这篇文章不背结论，而是从“浏览器如何分配空间”出发，把 Flex 的核心逻辑串起来。"

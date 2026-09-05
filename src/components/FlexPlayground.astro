@@ -1,0 +1,134 @@
+---
+const { mode = 'full' } = Astro.props;
+---
+
+<div class="flex-playground" data-flex-playground data-mode={mode}>
+  <div class="flex-playground__header">
+    <div>
+      <strong>Flex 可视化实验场</strong>
+      <span>拖动参数，观察浏览器如何分配空间</span>
+    </div>
+    <button type="button" class="flex-playground__reset">重置</button>
+  </div>
+
+  <div class="flex-playground__controls">
+    <label>
+      <span>容器宽度 <b data-value="container">600</b>px</span>
+      <input data-control="container" type="range" min="280" max="900" step="10" value="600" />
+    </label>
+    <label>
+      <span>A · grow <b data-value="growA">1</b></span>
+      <input data-control="growA" type="range" min="0" max="5" step="1" value="1" />
+    </label>
+    <label>
+      <span>B · grow <b data-value="growB">1</b></span>
+      <input data-control="growB" type="range" min="0" max="5" step="1" value="1" />
+    </label>
+    <label>
+      <span>C · grow <b data-value="growC">1</b></span>
+      <input data-control="growC" type="range" min="0" max="5" step="1" value="1" />
+    </label>
+    <label>
+      <span>A/B/C · shrink <b data-value="shrink">1</b></span>
+      <input data-control="shrink" type="range" min="0" max="3" step="1" value="1" />
+    </label>
+    <label>
+      <span>基础尺寸 <b data-value="basis">100</b>px</span>
+      <input data-control="basis" type="range" min="0" max="260" step="10" value="100" />
+    </label>
+  </div>
+
+  <div class="flex-playground__stage">
+    <div class="flex-playground__ruler"><span>0</span><span data-ruler></span><span>容器</span></div>
+    <div class="flex-playground__container" data-container>
+      <div class="flex-playground__item flex-playground__item--a" data-item="a">A</div>
+      <div class="flex-playground__item flex-playground__item--b" data-item="b">B</div>
+      <div class="flex-playground__item flex-playground__item--c" data-item="c">C</div>
+    </div>
+  </div>
+
+  <div class="flex-playground__readout">
+    <div><span>当前写法</span><code data-css></code></div>
+    <div><span>基础尺寸总和</span><b data-total></b></div>
+    <div><span>容器剩余空间</span><b data-free></b></div>
+  </div>
+</div>
+
+<style>
+  .flex-playground {
+    margin: 2rem 0;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-bg, rgba(127, 127, 127, 0.04));
+  }
+  .flex-playground__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+  }
+  .flex-playground__header strong { display: block; font-size: .98rem; }
+  .flex-playground__header span { display: block; margin-top: .2rem; color: var(--muted-color, #6b7280); font-size: .82rem; }
+  .flex-playground__reset { border: 1px solid var(--border-color, #d1d5db); border-radius: 8px; padding: .35rem .65rem; background: transparent; color: inherit; cursor: pointer; }
+  .flex-playground__controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1rem; padding: 1rem 1.1rem; }
+  .flex-playground__controls label { min-width: 0; }
+  .flex-playground__controls span { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .35rem; font-size: .78rem; color: var(--muted-color, #6b7280); }
+  .flex-playground__controls b { color: inherit; font-variant-numeric: tabular-nums; }
+  .flex-playground__controls input { width: 100%; accent-color: var(--link-color, #2563eb); }
+  .flex-playground__stage { margin: 0 1.1rem 1rem; padding: 1rem; border-radius: 12px; background: var(--code-bg, rgba(127, 127, 127, .08)); overflow-x: auto; }
+  .flex-playground__ruler { display: flex; justify-content: space-between; margin: 0 auto .4rem; max-width: 900px; font-size: .7rem; color: var(--muted-color, #9ca3af); }
+  .flex-playground__container { display: flex; height: 96px; margin: 0 auto; border: 2px dashed currentColor; border-radius: 10px; overflow: hidden; transition: width .15s ease; }
+  .flex-playground__item { display: flex; align-items: center; justify-content: center; min-width: 0; flex-basis: var(--basis); flex-shrink: var(--shrink); font-weight: 700; transition: flex-grow .15s ease, flex-basis .15s ease; }
+  .flex-playground__item--a { flex-grow: var(--grow-a); background: rgba(59, 130, 246, .2); }
+  .flex-playground__item--b { flex-grow: var(--grow-b); background: rgba(16, 185, 129, .2); }
+  .flex-playground__item--c { flex-grow: var(--grow-c); background: rgba(245, 158, 11, .2); }
+  .flex-playground__readout { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: .5rem; padding: 0 1.1rem 1.1rem; }
+  .flex-playground__readout > div { padding: .65rem .75rem; border-radius: 9px; background: var(--code-bg, rgba(127,127,127,.08)); }
+  .flex-playground__readout span { display: block; font-size: .7rem; color: var(--muted-color, #6b7280); }
+  .flex-playground__readout b, .flex-playground__readout code { display: block; margin-top: .2rem; font-size: .78rem; }
+  @media (max-width: 640px) {
+    .flex-playground__controls, .flex-playground__readout { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('[data-flex-playground]').forEach(function (root) {
+    var defaults = { container: 600, growA: 1, growB: 1, growC: 1, shrink: 1, basis: 100 };
+    var container = root.querySelector('[data-container]');
+    var items = { a: root.querySelector('[data-item="a"]'), b: root.querySelector('[data-item="b"]'), c: root.querySelector('[data-item="c"]') };
+
+    function render() {
+      var values = {};
+      root.querySelectorAll('[data-control]').forEach(function (input) {
+        values[input.dataset.control] = Number(input.value);
+        var output = root.querySelector('[data-value="' + input.dataset.control + '"]');
+        if (output) output.textContent = input.value;
+      });
+      container.style.width = values.container + 'px';
+      root.style.setProperty('--basis', values.basis + 'px');
+      root.style.setProperty('--shrink', values.shrink);
+      root.style.setProperty('--grow-a', values.growA);
+      root.style.setProperty('--grow-b', values.growB);
+      root.style.setProperty('--grow-c', values.growC);
+      var total = values.basis * 3;
+      var free = values.container - total;
+      root.querySelector('[data-total]').textContent = total + 'px';
+      root.querySelector('[data-free]').textContent = (free >= 0 ? '+' : '') + free + 'px';
+      root.querySelector('[data-css]').textContent = 'flex: grow  shrink  ' + values.basis + 'px';
+      root.querySelector('[data-ruler]').textContent = values.container + 'px';
+    }
+
+    root.querySelectorAll('[data-control]').forEach(function (input) { input.addEventListener('input', render); });
+    root.querySelector('.flex-playground__reset').addEventListener('click', function () {
+      Object.keys(defaults).forEach(function (key) {
+        var input = root.querySelector('[data-control="' + key + '"]');
+        if (input) input.value = defaults[key];
+      });
+      render();
+    });
+    render();
+  });
+</script>

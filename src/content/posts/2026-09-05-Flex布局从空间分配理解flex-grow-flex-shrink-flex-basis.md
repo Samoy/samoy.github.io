@@ -67,24 +67,19 @@ flex: auto;
 容器空间 - 所有 Item 的基础尺寸
 ```
 
-结果可能是两种情况：
+结果可能是两种情况。这里用 Mermaid 把这个过程画出来：
 
-```text
-剩余空间 > 0
-    ↓
-flex-grow
-    ↓
-把多出来的空间分出去
-```
-
-或者：
-
-```text
-剩余空间 < 0
-    ↓
-flex-shrink
-    ↓
-把超出的空间“削掉”
+```mermaid
+flowchart LR
+    A[Flex Container] --> B[计算 Flex Base Size]
+    B --> C[flex-basis]
+    C --> D{空间是否足够？}
+    D -->|剩余空间 > 0| E[flex-grow]
+    D -->|剩余空间 < 0| F[flex-shrink]
+    E --> G[分配多余空间]
+    F --> H[分担空间不足]
+    G --> I[最终尺寸]
+    H --> I
 ```
 
 所以可以先记住这句话：
@@ -246,30 +241,17 @@ flex-shrink × flex-basis
 
 整个过程可以理解成：
 
-```text
-                 Flex Container
-                       │
-                       ▼
-             计算 Flex Base Size
-                       │
-                 flex-basis
-                       │
-                       ▼
-               计算空间是否足够
-                       │
-                ┌──────┴──────┐
-                │             │
-              足够           不够
-                │             │
-                ▼             ▼
-           剩余空间         空间不足
-                │             │
-                ▼             ▼
-           flex-grow      flex-shrink
-                │             │
-                └──────┬──────┘
-                       ▼
-                   最终尺寸
+```mermaid
+flowchart TD
+    A[Flex Item] --> B[确定 Flex Base Size]
+    B --> C[读取 flex-basis]
+    C --> D{计算剩余空间}
+    D -->|正数| E[Positive Free Space]
+    D -->|负数| F[Negative Free Space]
+    E --> G[按 flex-grow 分配]
+    F --> H[按 flex-shrink × flex-basis 计算收缩权重]
+    G --> I[得到最终尺寸]
+    H --> I
 ```
 
 这才是理解 Flex 的核心。
@@ -324,19 +306,14 @@ flex-basis  = 0%
 
 三个 Item 都以相同的 grow 比例参与空间分配，而 basis 从 0 开始，因此最终得到：
 
-```text
-基础尺寸：
-A = 0
-B = 0
-C = 0
-
-剩余空间 ≈ 600px
-
-grow：
-1 : 1 : 1
-
-最终：
-200 / 200 / 200
+```mermaid
+flowchart LR
+    A[600px 容器] --> B[三个 Item 的 basis 都为 0]
+    B --> C[剩余空间约 600px]
+    C --> D[flex-grow: 1 : 1 : 1]
+    D --> E[A = 200px]
+    D --> F[B = 200px]
+    D --> G[C = 200px]
 ```
 
 所以真正值得记住的是：
@@ -375,14 +352,14 @@ flex-basis  = auto
 
 于是两者真正的差异就出来了：
 
-```text
-flex: 1
-    ↓
-basis = 0%
-
-flex: auto
-    ↓
-basis = auto
+```mermaid
+flowchart LR
+    A[flex: 1] --> A1[grow: 1]
+    A --> A2[shrink: 1]
+    A --> A3[basis: 0%]
+    B[flex: auto] --> B1[grow: 1]
+    B --> B2[shrink: 1]
+    B --> B3[basis: auto]
 ```
 
 **关键就在 `flex-basis`。**
@@ -409,12 +386,12 @@ C = 300px
 
 参与空间分配时，三个项目的 basis 都近似为 0，于是：
 
-```text
-600px
-  ↓
-1 : 1 : 1
-  ↓
-200 / 200 / 200
+```mermaid
+flowchart LR
+    A[600px] --> B[1 : 1 : 1]
+    B --> C[A 200px]
+    B --> D[B 200px]
+    B --> E[C 200px]
 ```
 
 所以即使内容长度不同，三个区域依然会尽量保持相同的空间。
@@ -463,15 +440,16 @@ C = 400px
 
 可以看到：
 
-```text
-flex: 1
-→ 更倾向于把空间做成相等
-
-flex: auto
-→ 更倾向于保留各自原本的尺寸差异，再分剩余空间
+```mermaid
+flowchart LR
+    A[基础尺寸<br/>100 / 200 / 300] --> B[剩余空间 300px]
+    B --> C[每项 grow = 1]
+    C --> D[最终尺寸<br/>200 / 300 / 400]
 ```
 
-这就是两者最重要的区别。
+所以：
+
+> `flex: 1` 更倾向于把项目做成相等尺寸；`flex: auto` 则保留项目原本的尺寸差异，再分配剩余空间。
 
 ## 十一、width 和 flex-basis 谁说了算？
 
@@ -490,14 +468,11 @@ flex: auto
 
 因此可以把它粗略理解成：
 
-```text
-flex-basis 有明确值
-        ↓
-优先作为 Flex 主轴基础尺寸
-
-flex-basis: auto
-        ↓
-再参考 width / height 等主轴尺寸
+```mermaid
+flowchart TD
+    A[Flex Item] --> B{flex-basis}
+    B -->|明确值| C[使用 flex-basis 作为主轴基础尺寸]
+    B -->|auto| D[参考 width / height 等主轴尺寸]
 ```
 
 所以如果你希望明确控制 Flex Item 在主轴上的起点，通常应该优先考虑 `flex-basis`。
@@ -522,9 +497,9 @@ flex-basis: auto
 
 然后发现左侧内容很长，怎么都不愿意缩小，甚至把容器撑破。
 
-很多时候问题并不在 `flex: 1`，而是 Flex Item 默认的最小尺寸行为。
+很多时候问题并不是 `flex: 1` 失效，而是 **Flex Item 默认存在一个基于内容的最小尺寸**。
 
-常见解决方式是：
+这也是为什么很多实际项目里会看到：
 
 ```css
 .left {
@@ -533,114 +508,123 @@ flex-basis: auto
 }
 ```
 
-`min-width: 0` 的作用可以简单理解成：
+`min-width: 0` 的作用可以粗略理解成：
 
-> **允许这个 Flex Item 在需要时缩到比内容自身最小尺寸更小。**
+> **允许这个 Flex Item 在需要时真正缩到内容尺寸以下，而不是被长内容的最小尺寸卡住。**
 
-这在下面这些场景特别常见：
+尤其是下面这种布局非常常见：
 
-- 左侧是 `flex: 1` 的主内容区
-- 右侧是固定宽度区域
-- 左侧存在超长文本、URL、表格等内容
-- 希望内容区出现省略号或滚动，而不是撑破整个布局
+```mermaid
+flowchart LR
+    A[Flex Container] --> B[左侧 flex: 1<br/>min-width: 0]
+    A --> C[右侧固定 300px]
+    B --> D[长文本 / 超长内容]
+    D -.可能产生最小尺寸约束.-> B
+```
 
-## 十三、实际开发中常见的几种写法
+因此，遇到“`flex: 1` 为什么还会撑爆”的问题时，`min-width: 0` 值得第一时间检查。
 
-### 1. 等分布局
+## 十三、为什么 flex: 1 里面的长文字还是会把布局撑爆？
+
+这个问题和上一节密切相关。
+
+例如：
 
 ```css
-.item {
+.parent {
+  display: flex;
+}
+
+.child {
   flex: 1;
 }
 ```
 
-适合：
+如果 `.child` 内部存在很长的不可断词文本、URL 或者某些不会自动换行的内容，那么内容本身可能形成一个较大的 min-content 尺寸。
 
-```text
-按钮组
-Tab
-三列卡片
-左右两栏等宽布局
-```
+这时候即使 `flex: 1` 已经参与了空间分配，最终尺寸仍然可能受到最小尺寸约束影响。
 
-### 2. 内容优先，同时允许扩展
+通常可以这样处理：
 
 ```css
-.item {
-  flex: auto;
+.child {
+  flex: 1;
+  min-width: 0;
 }
 ```
 
-适合：
-
-```text
-导航菜单
-根据内容决定初始宽度的元素
-```
-
-### 3. 固定尺寸，不参与伸缩
+如果是长 URL、连续英文字符等，还可以进一步考虑：
 
 ```css
-.item {
-  flex: none;
+.child {
+  overflow-wrap: anywhere;
 }
 ```
 
-等价于常见的：
+所以这里有两个不同层面的事情：
 
-```css
-flex: 0 0 auto;
+- `flex: 1`：告诉浏览器这个项目如何参与 Flex 空间分配。
+- `min-width: 0`：告诉浏览器不要让默认的最小尺寸约束阻止它继续缩小。
+
+## 十四、顺便认识几个常见的 flex 简写
+
+除了 `flex: 1`，下面几个也很常见：
+
+| 写法 | 等价理解 | 常见用途 |
+| --- | --- | --- |
+| `flex: none` | `0 0 auto` | 完全不参与伸缩 |
+| `flex: auto` | `1 1 auto` | 保留自身尺寸，同时参与伸缩 |
+| `flex: 1` | `1 1 0%` | 常见的等分布局 |
+| `flex: 0 auto` | `0 1 auto` | 不主动增长，但空间不足时可以收缩 |
+
+可以把它们放到一张图里：
+
+```mermaid
+flowchart LR
+    A[flex: 1] --> A1[1 1 0%]
+    B[flex: auto] --> B1[1 1 auto]
+    C[flex: none] --> C1[0 0 auto]
+    D[flex: 0 auto] --> D1[0 1 auto]
 ```
 
-适合：
+实际开发中，不需要把这些值全部死记下来。真正重要的是知道它们最终影响的是三个维度：
 
 ```text
-固定宽度侧边栏
-固定尺寸按钮
-工具栏中的固定区域
+grow / shrink / basis
 ```
 
-### 4. 固定基础尺寸，但允许增长
+## 十五、真正应该记住的，是这一张图
 
-```css
-.item {
-  flex: 1 1 200px;
-}
+以后看到 Flex 布局，不妨在脑子里过一遍：
+
+```mermaid
+flowchart TD
+    A[Flex Container] --> B[Flex Item]
+    B --> C[确定 Flex Base Size]
+    C --> D[flex-basis]
+    D --> E{剩余空间}
+    E -->|> 0| F[flex-grow]
+    E -->|< 0| G[flex-shrink]
+    F --> H[扩大 Item]
+    G --> I[收缩 Item]
+    H --> J[最终尺寸]
+    I --> J
 ```
 
-可以理解成：
+如果再进一步压缩成一句话，就是：
+
+> **先看 basis，再看空间，空间多看 grow，空间少看 shrink。**
+
+而 `flex: 1` 和 `flex: auto` 的核心区别，也终于可以归结到一个地方：
 
 ```text
-从 200px 开始
-空间多 → 可以增长
-空间少 → 可以收缩
-```
+flex: 1
+→ 1 1 0%
+→ basis 从 0 开始
 
-这在响应式布局中非常有用。
-
-## 十四、真正值得记住的不是结论，而是顺序
-
-如果把整篇文章压缩成一个思维模型，可以记成：
-
-```text
-             Flex Container
-                   │
-                   ▼
-          ① 确定基础尺寸
-             flex-basis
-                   │
-                   ▼
-        ② 基础尺寸够不够放？
-             /          \
-           够            不够
-           │              │
-           ▼              ▼
-     ③ 分配剩余空间    ③ 分摊不足空间
-        flex-grow        flex-shrink
-           │              │
-           └──────┬───────┘
-                  ▼
-               最终尺寸
+flex: auto
+→ 1 1 auto
+→ basis 尊重自身尺寸
 ```
 
 所以以后再看到：
@@ -649,60 +633,10 @@ flex: 0 0 auto;
 flex: 1;
 ```
 
-不要只记：
+不要再把它简单理解成“平均分配”。
 
-> “三个 `flex: 1` 可以三等分。”
+更准确的理解应该是：
 
-而应该想到：
+> **“我的基础尺寸按 0 参与 Flex 空间分配，如果有剩余空间，我按照 grow 比例拿走它。”**
 
-```text
-flex: 1
-  ↓
-1 1 0%
-  ↓
-基础尺寸从 0 开始
-  ↓
-有剩余空间
-  ↓
-按照 grow 比例分配
-```
-
-再看到：
-
-```css
-flex: auto;
-```
-
-想到：
-
-```text
-flex: 1 1 auto
-  ↓
-基础尺寸来自自身尺寸
-  ↓
-再分配剩余空间
-```
-
-这样你就不需要再背一堆 Flex 的“八股结论”了。
-
-## 最后
-
-Flex 真正难的地方，从来不是属性多，而是浏览器在背后做了一套空间分配算法。
-
-一旦把它理解成：
-
-```text
-基础尺寸
-   ↓
-空间是否足够
-   ↓
-增长 / 收缩
-   ↓
-最终尺寸
-```
-
-`flex-grow`、`flex-shrink`、`flex-basis` 以及 `flex: 1`、`flex: auto` 就会自然串起来。
-
-如果你正在阅读这篇文章，建议直接在文章顶部的 **Flex 可视化 Demo** 中修改容器宽度、grow、shrink 和 basis，然后观察每个 Item 的最终尺寸变化。
-
-**理解 Flex 最好的方式，不是背 `flex: 1`，而是亲眼看着空间是怎么被分掉的。**
+这才是 Flex 真正值得理解的地方。

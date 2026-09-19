@@ -567,6 +567,11 @@ button {
   font-size: inherit;
 }
 
+/* 代码块恒为深底浅字（Shiki github-dark），浅色选区会糊掉文字，故用主色半透明叠加 */
+.prose pre:not(.mermaid) ::selection {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
 .prose .code-block {
   position: relative;
   margin: 1.5em 0;

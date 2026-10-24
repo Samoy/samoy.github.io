@@ -44,7 +44,7 @@ grep -n "error" app.log
 
 | 符号 | 含义 | 示例 |
 | --- | --- | --- |
-| `|` | 管道：把左侧命令的标准输出传给右侧命令的标准输入 | `cat app.log \| grep error` |
+| `\|` | 管道：把左侧命令的标准输出传给右侧命令的标准输入 | `cat app.log \| grep error` |
 | `>` | 重定向：把输出写入文件，覆盖原内容 | `echo hello > a.txt` |
 | `>>` | 追加重定向：把输出追加到文件末尾 | `echo hello >> a.txt` |
 

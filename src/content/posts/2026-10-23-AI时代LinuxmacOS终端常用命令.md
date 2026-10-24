@@ -1,6 +1,6 @@
 ---
 title: "AI Agent 时代的终端生存指南：从 grep、sed 到管道符"
-category: "开发工具"
+category: "Others"
 date: 2026-10-23
 keywords: "Linux, macOS, 终端命令, grep, sed, 管道符, Shell, AI Agent, 命令行, 开发效率"
 excerpt: "为什么 AI 编程 Agent 总在调用 grep、sed 和管道符？从文件查看、文本搜索、内容处理到命令组合，掌握 Linux/macOS 开发中最常用的终端命令，以及 AI 时代更安全的使用习惯。"

@@ -5,20 +5,60 @@ const g = siteConfig.giscus;
 
 <section class="comments">
   <h5>欢迎在评论区留下您的见解~</h5>
-  <script
-    src="https://giscus.app/client.js"
+  <div
+    class="giscus"
     data-repo={g.repo}
     data-repo-id={g.repoId}
     data-category={g.category}
     data-category-id={g.categoryId}
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="0"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin="anonymous"
-    async
-  ></script>
+  ></div>
 </section>
+
+<script>
+  // giscus 的 client.js 在自身执行时才读取 document.currentScript.dataset，
+  // 所以运行期创建该 script 才能让首屏主题就跟站点明暗一致（构建期无从得知）。
+  const host = document.querySelector<HTMLElement>('.giscus');
+
+  if (host) {
+    const theme = () => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+
+    const baseConfig: Record<string, string> = {
+      repo: host.dataset.repo ?? '',
+      repoId: host.dataset.repoId ?? '',
+      category: host.dataset.category ?? '',
+      categoryId: host.dataset.categoryId ?? '',
+      mapping: 'pathname',
+      strict: '0',
+      reactionsEnabled: '0',
+      emitMetadata: '0',
+      inputPosition: 'top',
+      lang: 'zh-CN',
+    };
+
+    let script: HTMLScriptElement | null = null;
+
+    const mount = () => {
+      script?.remove();
+      script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      for (const [key, value] of Object.entries({ ...baseConfig, theme: theme() })) {
+        script.dataset[key] = value;
+      }
+      host.insertAdjacentElement('afterend', script);
+    };
+
+    mount();
+
+    document.addEventListener('themechange', () => {
+      const frame = host.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+      if (frame && !frame.classList.contains('giscus-frame--loading')) {
+        frame.contentWindow?.postMessage({ giscus: { setConfig: { theme: theme() } } }, 'https://giscus.app');
+      } else {
+        // 小部件尚未就绪时 postMessage 会被丢弃，直接按新主题重建
+        mount();
+      }
+    });
+  }
+</script>

@@ -110,5 +110,6 @@ const socialLinks = [
     try {
       localStorage.setItem('theme', dark ? 'light' : 'dark');
     } catch {}
+    document.dispatchEvent(new Event('themechange'));
   });
 </script>

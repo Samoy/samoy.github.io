@@ -7,8 +7,6 @@ excerpt: "Figma MCP 能把设计上下文交给 AI，却不能替我们证明页
 keywords: Figma, MCP, Agent Loop, AI Coding, Playwright, Visual Regression, UI 还原
 ---
 
-# Figma MCP 已经接入，为什么页面还是不够像？用 Agent Loop 建立视觉闭环
-
 ## 前言
 
 使用 AI 编程工具实现 UI 时，很多开发者都经历过类似的过程：在 Figma 中选中设计稿，通过 MCP 将设计信息提供给 AI，AI 分析后生成代码；启动项目查看效果，却发现页面和设计稿仍然存在明显差异。
